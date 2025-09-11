@@ -1,3 +1,12 @@
+# macOS things
+*.out
+*.DS_Store
+
+# pytest
+env
+__pycache__
+.pytest
+
 # Prerequisites
 *.d
 
