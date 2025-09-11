@@ -1,16 +1,55 @@
-
 #include <iostream>
 #include <cstring>   // for strlen, strcpy
 
 // TODO: function prototypes
+void addStudent(char *name, double gpa, char *names[], double gpas[], int &size, int capacity);
+void updateGPA(double *gpaPtr, double newGpa);
+void printStudent(const char *name, const double &gpa);
+double averageGPA(const double gpas[], int size);
 
 // TODO: implement addStudent
+void addStudent(char *name, double gpa, char *names[], double gpas[], int &size, int capacity){
+	if(size < capacity){
+		names[size] = new char[256];
+		
+		strcpy(names[size], name);
+		gpas[size] = gpa;
+
+		size++;
+
+		return;
+	}
+	
+	// shouldn't get here
+	throw "List full";
+}
 
 // TODO: implement updateGPA
+void updateGPA(double *gpaPtr, double newGpa){
+	*gpaPtr = newGpa;
+}
 
 // TODO: implement printStudent
+void printStudent(const char *name, const double &gpa){
+	std::cout << name << " | " << gpa << std::endl;
+}
 
 // TODO: implement averageGPA
+double averageGPA(const double gpas[], int size){
+	if(size != 0){
+		double sum = 0;
+
+		for(int i = 0; i < size; i++){
+			sum += gpas[i];
+		}
+
+		return sum / size;
+	}
+	
+	// shoudln't get here
+	throw "No students";
+	return -1;
+}
 
 int main(int argc, char* argv[]) {
     if (argc < 2) {
@@ -37,19 +76,80 @@ int main(int argc, char* argv[]) {
         switch (choice) {
             case 1: {
                 // TODO: implement menu logic
-                break;
+		// get name
+		std::cout << "Please enter a name: ";
+		std::cin.get();
+		char *name = new char[256];
+		std::cin.getline(name, 256);
+		std::cout << std::endl;
+
+		// get gpa
+		std::cout << "Please enter a GPA: ";
+		double gpa = 0;
+		std::cin >> gpa;
+		std::cout << std::endl;
+
+		// call function
+		try{
+			addStudent(name, gpa, names, gpas, size, capacity);
+		}
+		catch(const char *msg){
+			std::cout << msg << std::endl;
+		}
+
+		// cleanup
+                delete[] name;
+		break;
             }
             case 2: {
                 // TODO: implement menu logic
+		// get index of gpa
+		std::cout << "Please enter an index: ";
+		int idx = 0;
+		std::cin >> idx;
+		std::cout << std::endl;
+
+		// get new gpa
+		std::cout << "Please enter a new GPA: ";
+		double newGpa = 0;
+		std::cin >> newGpa;
+		std::cout << std::endl;
+
+		// call function
+		updateGPA(&gpas[idx], newGpa);
+
+		// cleanup
                 break;
             }
             case 3: {
                 // TODO: implement menu logic
-                break;
+		// make sure the list isn't empty
+		if(size == 0){
+			std::cout << "No students" << std::endl;
+			break;
+		}
+		
+                // iterate over the list
+		for(int i = 0; i < size; i++){
+			printStudent(names[i], gpas[i]);
+		}
+
+		// cleanup
+		break;
             }
             case 4: {
                 // TODO: implement menu logic
-                break;
+		// call the function
+		try{
+			double avg = averageGPA(gpas, size);
+
+			std::cout << "Average GPA: " << static_cast<int>(avg) << std::endl;
+		}
+		catch(const char *msg){
+			std::cout << msg << std::endl;
+		}
+		// cleanup
+		break;
             }
             case 5: {
                 std::cout << "Goodbye!" << std::endl;
@@ -62,6 +162,9 @@ int main(int argc, char* argv[]) {
     } while (choice != 5);
 
     // TODO: free memory
+	for(int i = 0; i < size; i++){
+		delete[] names[i];
+	}
 
     return 0;
 }
