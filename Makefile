@@ -1,5 +1,5 @@
 all:
-	c++ *.cpp -o testing.out
+	c++ solution.cpp -o testing.out
 
 clean:
 	rm ./testing.out

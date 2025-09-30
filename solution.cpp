@@ -116,7 +116,11 @@ int main(int argc, char* argv[]) {
 		std::cout << std::endl;
 
 		// call function
-		updateGPA(&gpas[idx], newGpa);
+		if(idx >= 0 && idx < size){
+			updateGPA(&gpas[idx], newGpa);
+		}else{
+			std::cout << "Invalid index" << std::endl;
+		}
 
 		// cleanup
                 break;
